@@ -1,12 +1,14 @@
-import { Text } from '../components/Text';
-
 import { Container } from './styles';
+
+import Header from '../components/Header';
+import Tasks from '../components/Tasks';
 
 export default function Main() {
   return (
     <Container>
-      <Text color="red">Componente Main</Text>
-      <Text>Componente Main</Text>
+      <Header />
+
+      <Tasks />
     </Container>
   );
 }
