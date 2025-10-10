@@ -1,17 +1,55 @@
+import { FlatList, TouchableOpacity } from 'react-native';
+
 import { Text } from '../Text';
 
-import { Task, TaskDescription, TaskFooter, TaskHeader } from './styles';
+import {
+  Task,
+  TaskActions,
+  TaskDescription,
+  TaskFooter,
+  TaskHeader,
+  TaskIcon,
+  TaskStatus
+} from './styles';
 
-export default function Tasks() {
+import remove from '../../assets/images/delete.png';
+import done from '../../assets/images/done.png';
+import edit from '../../assets/images/edit.png';
+import peding from '../../assets/images/pending.png';
+
+export default function Tasks({ tasks, onDelete, onEditTask, onChangeStatus }) {
   return (
-    <Task>
-      <TaskHeader>
-        <Text size={18} weight="600">Estudar para o simulado</Text>
-      </TaskHeader>
-      <TaskDescription>
-        <Text opacity={0.5}>Simulado Mobile dia 03/10</Text>
-      </TaskDescription>
-      <TaskFooter></TaskFooter>
-    </Task>
+    <FlatList
+      data={tasks}
+      keyExtractor={task => task.id}
+      renderItem={({ item: task }) => (
+        <Task>
+          <TaskHeader>
+            <Text size={18} weight="600">{task.title}</Text>
+          </TaskHeader>
+          <TaskDescription>
+            <Text opacity={0.5}>{task.description}</Text>
+          </TaskDescription>
+          <TaskFooter>
+            <TaskStatus onPress={() => onChangeStatus(task.id)}>
+              <TaskIcon source={task.done ? done : peding} />
+              <Text color={task.done ? '#2192D8' : '#E620AE'}>
+                {task.done ? 'Feita' : 'Pendente'}
+              </Text>
+            </TaskStatus>
+
+            <TaskActions>
+              <TouchableOpacity onPress={() => onEditTask(task)}>
+                <TaskIcon source={edit} />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => onDelete(task.id)}>
+                <TaskIcon source={remove} />
+              </TouchableOpacity>
+            </TaskActions>
+          </TaskFooter>
+        </Task>
+      )}
+    />
   );
 }
