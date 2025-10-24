@@ -1,13 +1,20 @@
+import { useState } from 'react';
+
 import { Container } from './styles';
 
+import AddTaskButton from '../components/AddTaskButton';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 import Header from '../components/Header';
 import Tasks from '../components/Tasks';
 
 import { tasks } from '../mocks/tasks';
 
 export default function Main() {
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
   function handleDeleteTask(id) {
-    alert(`Excluir tarefa de id ${id}`);
+    //alert(`Excluir tarefa de id ${id}`);
+    setIsDeleteModalVisible(true);
   }
 
   function handleEditTask(task) {
@@ -16,6 +23,10 @@ export default function Main() {
 
   function handleChangeStatus(id) {
     alert(`Excluir tarefa de id ${id}`);
+  }
+
+  function handleConfirmDeleteleTask() {
+    alert('Excluir a tarefa');
   }
 
   return (
@@ -27,6 +38,14 @@ export default function Main() {
         onChangeStatus={handleChangeStatus}
         onDelete={handleDeleteTask}
         onEditTask={handleEditTask}
+      />
+
+      <AddTaskButton onPress={() => alert('Abrir Formulario de Cadastro')} />
+
+      <DeleteConfirmModal
+        visible={isDeleteModalVisible}
+        onConfirm={handleConfirmDeleteleTask}
+        onClose={() => setIsDeleteModalVisible(false)}
       />
     </Container>
   );
