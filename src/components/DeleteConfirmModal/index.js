@@ -10,6 +10,7 @@ export default function DeleteConfirmModal({ onClose, onConfirm, visible }) {
   return (
     <CustomModal
       visible={visible}
+      onClose={onClose}
     >
       <Text
         size={18}

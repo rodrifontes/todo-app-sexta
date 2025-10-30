@@ -5,12 +5,14 @@ import { Container } from './styles';
 import AddTaskButton from '../components/AddTaskButton';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
 import Header from '../components/Header';
+import NewTaskModal from '../components/NewTaskModal';
 import Tasks from '../components/Tasks';
 
 import { tasks } from '../mocks/tasks';
 
 export default function Main() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
 
   function handleDeleteTask(id) {
     //alert(`Excluir tarefa de id ${id}`);
@@ -29,6 +31,10 @@ export default function Main() {
     alert('Excluir a tarefa');
   }
 
+  function handleCreateTask(task) {
+    alert(`{ title: ${task.title}, description: ${task.descrition} }`);
+  }
+
   return (
     <Container>
       <Header />
@@ -40,12 +46,18 @@ export default function Main() {
         onEditTask={handleEditTask}
       />
 
-      <AddTaskButton onPress={() => alert('Abrir Formulario de Cadastro')} />
+      <AddTaskButton onPress={() => setIsNewTaskModalVisible(true)} />
 
       <DeleteConfirmModal
         visible={isDeleteModalVisible}
         onConfirm={handleConfirmDeleteleTask}
         onClose={() => setIsDeleteModalVisible(false)}
+      />
+
+      <NewTaskModal
+        visible={isNewTaskModalVisible}
+        onClose={() => setIsNewTaskModalVisible(false)}
+        onSave={handleCreateTask}
       />
     </Container>
   );
