@@ -1,6 +1,9 @@
 import { useFonts } from 'expo-font';
 import Main from './src/Main';
 
+import { SQLiteProvider } from 'expo-sqlite';
+import { initializeDatabase } from './src/database/initializeDatabase';
+
 export default function App() {
   const [isFontsLoaded] = useFonts({
     'GeneralSans-400': require('./src/assets/fonts/GeneralSans-Regular.otf'),
@@ -13,6 +16,8 @@ export default function App() {
   }
 
   return (
-    <Main />
+    <SQLiteProvider databaseName="db_todo_app.db" onInit={initializeDatabase}>
+      <Main />
+    </SQLiteProvider>
   );
 }

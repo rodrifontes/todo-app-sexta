@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ActivityIndicator, Image } from 'react-native';
 
@@ -14,6 +14,8 @@ import Tasks from '../components/Tasks';
 import tasksEmpty from '../assets/images/task.png';
 import { Text } from '../components/Text';
 
+import { useTasksDatabase } from '../database/useTasksDatabase';
+
 export default function Main() {
   const [tasks, setTasks] = useState([]);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -22,6 +24,18 @@ export default function Main() {
   const [taskBeingEdited, setTaskBeingEdited] = useState(false);
   const [taskIdBeingDeleted, setTaskIdBeingDeleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { show, create, update, updateStatus, remove } = useTasksDatabase();
+
+  async function getTasks() {
+    setIsLoading(true);
+    setTasks(await show());
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    getTasks();
+  }, []);
 
   function handleDeleteTask(id) {
     setTaskIdBeingDeleted(id);
@@ -34,20 +48,31 @@ export default function Main() {
   }
 
   function handleChangeStatus(id) {
-    alert(`Excluir tarefa de id ${id}`);
+    updateStatus(id);
+    getTasks();
   }
 
   function handleConfirmDeleteleTask() {
-    alert(`Excluir a tarefa de id ${taskIdBeingDeleted}`);
+    setIsLoading(true);
+    remove(taskIdBeingDeleted);
+    getTasks();
+    setIsLoading(false);
+    setIsDeleteModalVisible(false);
   }
 
   function handleCreateTask(task) {
-    alert(`{ title: ${task.title}, description: ${task.description} }`);
+    setIsLoading(true);
+    create(task);
+    getTasks();
+    setIsLoading(false);
     setIsNewTaskModalVisible(false);
   }
 
   function handleUpdateTask(task) {
-    alert(`{ id: ${task.id}, title: ${task.title}, description: ${task.description} }`);
+    setIsLoading(true);
+    update(task);
+    getTasks();
+    setIsLoading(false);
     setIsEditTaskModalVisible(false);
   }
 
